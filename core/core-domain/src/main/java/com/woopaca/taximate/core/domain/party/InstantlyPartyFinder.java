@@ -18,13 +18,13 @@ public class InstantlyPartyFinder {
     }
 
     public List<Party> findRecentParties(Duration recentDuration) {
-        Sort sortByCreatedAtDesc = Sort.by(Sort.Order.desc("createdAt"));
+        Sort sortByCreatedAt = Sort.by(Sort.Order.asc("createdAt"));
         LocalDateTime recentThreshold = LocalDateTime.now()
                 .minus(recentDuration);
-        return instantlyPartyRepository.findByCreatedAtAfter(recentThreshold, sortByCreatedAtDesc)
+        return instantlyPartyRepository.findByCreatedAtAfter(recentThreshold, sortByCreatedAt)
                 .stream()
                 .map(Party::fromEntity)
-                .filter(party -> party.currentParticipantsCount() != 0)
+                .filter(Party::isParticipantsExist)
                 .toList();
     }
 }

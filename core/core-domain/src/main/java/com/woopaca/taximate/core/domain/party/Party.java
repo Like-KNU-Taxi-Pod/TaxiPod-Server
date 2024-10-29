@@ -186,4 +186,8 @@ public class Party {
                 .map(Participation::getUser)
                 .toList();
     }
+
+    public boolean isParticipantsExist() {
+        return currentParticipantsCount() > 0;
+    }
 }
