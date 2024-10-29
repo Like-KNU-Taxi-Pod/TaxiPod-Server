@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                 .logout(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> request.requestMatchers("/oauth2/**", "/api/v1/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/parties/**", "/actuator/**", "/ws/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/parties/**", "/api/v2/parties/**", "/actuator/**", "/ws/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception

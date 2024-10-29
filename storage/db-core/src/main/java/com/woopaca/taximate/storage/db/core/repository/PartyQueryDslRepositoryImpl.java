@@ -39,7 +39,7 @@ public class PartyQueryDslRepositoryImpl implements PartyQueryDslRepository {
         });
         return queryFactory.select(partyEntity)
                 .from(partyEntity)
-                .leftJoin(partyEntity.participationSet, participationEntity).fetchJoin()
+//                .leftJoin(partyEntity.participationSet, participationEntity).fetchJoin()
                 .where(partyEntity.originLocation.within(polygon).and(partyEntity.departureTime.after(after)))
                 .orderBy(partyEntity.departureTime.asc())
                 .fetch();

@@ -4,6 +4,7 @@ import com.woopaca.taximate.core.domain.local.model.Address;
 import com.woopaca.taximate.core.domain.party.Participation.ParticipationStatus;
 import com.woopaca.taximate.core.domain.party.model.Coordinate;
 import com.woopaca.taximate.core.domain.user.User;
+import com.woopaca.taximate.storage.db.core.entity.InstantlyPartyEntity;
 import com.woopaca.taximate.storage.db.core.entity.PartyEntity;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -71,6 +72,20 @@ public class Party {
                 .build();
     }
 
+    public static Party fromEntity(InstantlyPartyEntity entity) {
+        Set<Participation> participationSet = entity.getParticipationSet()
+                .stream()
+                .map(Participation::fromEntity)
+                .collect(Collectors.toSet());
+        return Party.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .maxParticipants(entity.getMaxParticipants())
+                .createdAt(entity.getCreatedAt())
+                .participationSet(participationSet)
+                .build();
+    }
+
     public static Party fromEntityExcludeParticipants(PartyEntity entity) {
         return defaultBuilder(entity)
                 .build();
@@ -106,7 +121,6 @@ public class Party {
     }
 
     public User getHost() {
-        // TODO 호스트가 존재하지 않는 경우 예외 처리
         return participationSet.stream()
                 .filter(Participation::isHost)
                 .findAny()
@@ -126,6 +140,9 @@ public class Party {
     }
 
     public boolean isProgress() {
+        if (departureTime == null) {
+            return true;
+        }
         return departureTime.isAfter(LocalDateTime.now().minusMinutes(10));
     }
 
