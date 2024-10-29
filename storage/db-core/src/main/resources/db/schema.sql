@@ -68,10 +68,10 @@ CREATE INDEX `idx_party_id` ON `chat` (`party_id`);
 
 CREATE TABLE IF NOT EXISTS `chat_read`
 (
-    `id`           BIGINT   NOT NULL AUTO_INCREMENT,
-    `user_id`      BIGINT   NOT NULL,
-    `party_id`     BIGINT   NOT NULL,
-    `last_chat_id` BIGINT   NOT NULL,
+    `id`           BIGINT NOT NULL AUTO_INCREMENT,
+    `user_id`      BIGINT NOT NULL,
+    `party_id`     BIGINT NOT NULL,
+    `last_chat_id` BIGINT NOT NULL,
     PRIMARY KEY (`id`)
 );
 
@@ -90,3 +90,15 @@ CREATE TABLE IF NOT EXISTS `push_token`
 CREATE INDEX `idx_user_id` ON `push_token` (`user_id`);
 
 CREATE UNIQUE INDEX `uidx_token` ON `push_token` (`token`);
+
+CREATE TABLE IF NOT EXISTS `instantly_party`
+(
+    `id`               BIGINT      NOT NULL AUTO_INCREMENT,
+    `title`            VARCHAR(30) NOT NULL, # 팟 제목
+    `max_participants` INT         NOT NULL, # 최대 탑승 인원
+    `created_at`       DATETIME    NOT NULL, # 생성 시간
+    `updated_at`       DATETIME    NOT NULL, # 수정 시간
+    PRIMARY KEY (`id`)
+);
+
+CREATE INDEX `idx_created_at` ON `instantly_party` (`created_at`);
