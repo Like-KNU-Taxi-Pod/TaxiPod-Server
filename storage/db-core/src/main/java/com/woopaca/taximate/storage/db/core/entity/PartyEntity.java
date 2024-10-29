@@ -2,6 +2,7 @@ package com.woopaca.taximate.storage.db.core.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import lombok.Builder;
 import lombok.Getter;
 import org.locationtech.jts.geom.Coordinate;
@@ -39,7 +40,8 @@ public class PartyEntity extends BaseEntity {
 
     private int views;
 
-    @OneToMany(mappedBy = "party")
+    @Transient
+//    @OneToMany(mappedBy = "party")
     private Set<ParticipationEntity> participationSet = Collections.emptySet();
 
     public PartyEntity() {

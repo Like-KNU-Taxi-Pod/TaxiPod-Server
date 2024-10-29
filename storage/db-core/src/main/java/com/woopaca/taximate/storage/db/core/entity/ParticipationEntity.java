@@ -25,21 +25,21 @@ public class ParticipationEntity extends BaseEntity {
     private UserEntity user;
 
     @JoinColumn(name = "party_id", nullable = false)
-    @ManyToOne(optional = false, targetEntity = PartyEntity.class, fetch = FetchType.LAZY)
-    private PartyEntity party;
+    @ManyToOne(optional = false, targetEntity = InstantlyPartyEntity.class, fetch = FetchType.LAZY)
+    private InstantlyPartyEntity party;
 
     public ParticipationEntity() {
     }
 
     @Builder
-    public ParticipationEntity(String role, String status, UserEntity user, PartyEntity party) {
+    public ParticipationEntity(String role, String status, UserEntity user, InstantlyPartyEntity party) {
         this.role = role;
         this.status = status;
         this.user = user;
         this.party = party;
     }
 
-    public static ParticipationEntity participant(PartyEntity partyEntity, UserEntity userEntity) {
+    public static ParticipationEntity participant(InstantlyPartyEntity partyEntity, UserEntity userEntity) {
         return ParticipationEntity.builder()
                 .role("PARTICIPANT")
                 .user(userEntity)
@@ -48,7 +48,7 @@ public class ParticipationEntity extends BaseEntity {
                 .build();
     }
 
-    public static ParticipationEntity host(PartyEntity partyEntity, UserEntity userEntity) {
+    public static ParticipationEntity host(InstantlyPartyEntity partyEntity, UserEntity userEntity) {
         return ParticipationEntity.builder()
                 .role("HOST")
                 .user(userEntity)
