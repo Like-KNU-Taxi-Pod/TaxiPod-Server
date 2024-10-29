@@ -24,6 +24,7 @@ public class InstantlyPartyFinder {
         return instantlyPartyRepository.findByCreatedAtAfter(recentThreshold, sortByCreatedAtDesc)
                 .stream()
                 .map(Party::fromEntity)
+                .filter(party -> party.currentParticipantsCount() != 0)
                 .toList();
     }
 }
