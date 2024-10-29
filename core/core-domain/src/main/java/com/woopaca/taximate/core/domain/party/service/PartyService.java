@@ -3,6 +3,8 @@ package com.woopaca.taximate.core.domain.party.service;
 import com.woopaca.taximate.core.domain.auth.AuthenticatedUserHolder;
 import com.woopaca.taximate.core.domain.event.ParticipationEventPublisher;
 import com.woopaca.taximate.core.domain.local.AddressAllocator;
+import com.woopaca.taximate.core.domain.party.InstantlyParties;
+import com.woopaca.taximate.core.domain.party.InstantlyPartyFinder;
 import com.woopaca.taximate.core.domain.party.KakaoMobilityClientProxy;
 import com.woopaca.taximate.core.domain.party.Participation;
 import com.woopaca.taximate.core.domain.party.ParticipationModifier;
@@ -21,6 +23,7 @@ import com.woopaca.taximate.core.domain.user.UserLock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,8 +40,9 @@ public class PartyService {
     private final UserLock userLock;
     private final ParticipationEventPublisher participationEventPublisher;
     private final PartyViewsIncreaser partyViewsIncreaser;
+    private final InstantlyPartyFinder instantlyPartyFinder;
 
-    public PartyService(PartyMapFinder partyMapFinder, PartyFinder partyFinder, KakaoMobilityClientProxy kakaoMobilityClient, PartyValidator partyValidator, AddressAllocator addressAllocator, ParticipationModifier participationModifier, PartyAppender partyAppender, UserLock userLock, ParticipationEventPublisher participationEventPublisher, PartyViewsIncreaser partyViewsIncreaser) {
+    public PartyService(PartyMapFinder partyMapFinder, PartyFinder partyFinder, KakaoMobilityClientProxy kakaoMobilityClient, PartyValidator partyValidator, AddressAllocator addressAllocator, ParticipationModifier participationModifier, PartyAppender partyAppender, UserLock userLock, ParticipationEventPublisher participationEventPublisher, PartyViewsIncreaser partyViewsIncreaser, InstantlyPartyFinder instantlyPartyFinder) {
         this.partyMapFinder = partyMapFinder;
         this.partyFinder = partyFinder;
         this.kakaoMobilityClient = kakaoMobilityClient;
@@ -49,6 +53,7 @@ public class PartyService {
         this.userLock = userLock;
         this.participationEventPublisher = participationEventPublisher;
         this.partyViewsIncreaser = partyViewsIncreaser;
+        this.instantlyPartyFinder = instantlyPartyFinder;
     }
 
     /**
@@ -107,5 +112,12 @@ public class PartyService {
 
         participationEventPublisher.publishParticipateEvent(party, authenticatedUser, participation.getParticipatedAt());
         return party.getId();
+    }
+
+    public InstantlyParties getInstantlyParties() {
+        User authenticatedUser = AuthenticatedUserHolder.getAuthenticatedUser();
+        Duration recentDuration = Duration.ofDays(10);
+        List<Party> recentParties = instantlyPartyFinder.findRecentParties(recentDuration);
+        return new InstantlyParties(recentParties, authenticatedUser);
     }
 }

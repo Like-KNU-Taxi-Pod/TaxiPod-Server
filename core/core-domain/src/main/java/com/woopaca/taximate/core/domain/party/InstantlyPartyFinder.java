@@ -11,18 +11,16 @@ import java.util.List;
 @Component
 public class InstantlyPartyFinder {
 
-    private static final Duration RECENT_DURATION = Duration.ofDays(10);
-
     private final InstantlyPartyRepository instantlyPartyRepository;
 
     public InstantlyPartyFinder(InstantlyPartyRepository instantlyPartyRepository) {
         this.instantlyPartyRepository = instantlyPartyRepository;
     }
 
-    public List<Party> findRecentParties() {
+    public List<Party> findRecentParties(Duration recentDuration) {
         Sort sortByCreatedAtDesc = Sort.by(Sort.Order.desc("createdAt"));
         LocalDateTime recentThreshold = LocalDateTime.now()
-                .minus(RECENT_DURATION);
+                .minus(recentDuration);
         return instantlyPartyRepository.findByCreatedAtAfter(recentThreshold, sortByCreatedAtDesc)
                 .stream()
                 .map(Party::fromEntity)
