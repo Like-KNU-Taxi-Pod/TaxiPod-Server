@@ -114,10 +114,33 @@ public class PartyService {
         return party.getId();
     }
 
+    /**
+     * 빠른 팟 목록 조회
+     * @return 10일 이전까지의 빠른 팟 목록
+     */
+    @Transactional(readOnly = true)
     public InstantlyParties getInstantlyParties() {
         User authenticatedUser = AuthenticatedUserHolder.getAuthenticatedUser();
         Duration recentDuration = Duration.ofDays(10);
         List<Party> recentParties = instantlyPartyFinder.findRecentParties(recentDuration);
         return new InstantlyParties(recentParties, authenticatedUser);
+    }
+
+    /**
+     * 빠른 팟 생성
+     * @param newParty 생성할 팟 정보
+     * @return 생성된 팟 ID
+     */
+    @Transactional
+    public Long createInstantlyParty(Party newParty) {
+        User authenticatedUser = AuthenticatedUserHolder.getAuthenticatedUser();
+        userLock.lock(authenticatedUser);
+        partyValidator.validateCreateInstantlyParty(newParty, authenticatedUser);
+
+        Party party = partyAppender.appendNewInstantly(newParty);
+        Participation participation = participationModifier.appendHost(party, authenticatedUser);
+
+        participationEventPublisher.publishParticipateEvent(party, authenticatedUser, participation.getParticipatedAt());
+        return party.getId();
     }
 }
