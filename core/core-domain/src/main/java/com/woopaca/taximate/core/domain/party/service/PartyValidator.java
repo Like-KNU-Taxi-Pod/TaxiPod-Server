@@ -102,4 +102,12 @@ public class PartyValidator {
             throw new NotParticipatedPartyException();
         }
     }
+
+    public void validateCreateInstantlyParty(Party party, User host) {
+        if (party.getTitle().length() > Party.MAX_TITLE_LENGTH) {
+            throw new TitleTooLongException();
+        }
+        validateParticipantsCount(party);
+        validateMaxParticipationCount(host);
+    }
 }
