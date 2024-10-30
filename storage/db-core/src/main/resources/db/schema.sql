@@ -102,3 +102,13 @@ CREATE TABLE IF NOT EXISTS `instantly_party`
 );
 
 CREATE INDEX `idx_created_at` ON `instantly_party` (`created_at`);
+
+CREATE TABLE IF NOT EXISTS `launch_event`
+(
+    `id`         BIGINT   NOT NULL AUTO_INCREMENT,
+    `user_id`    BIGINT   NOT NULL UNIQUE,
+    `phone`      CHAR(11) NOT NULL,
+    `created_at` DATETIME NOT NULL,
+    `updated_at` DATETIME NOT NULL,
+    PRIMARY KEY (`id`)
+);
