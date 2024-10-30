@@ -4,7 +4,6 @@ import com.woopaca.taximate.core.domain.party.Party;
 import com.woopaca.taximate.core.domain.user.User;
 import com.woopaca.taximate.storage.db.core.repository.ChatRepository;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class ChatFinder {
     }
 
     public Chat findRecentMessage(Party party) {
-        return chatRepository.findTopByPartyId(party.getId(), Sort.by(Order.desc("id")))
+        return chatRepository.findTopByPartyId(party.getId(), Sort.by("id").descending())
                 .map(entity -> Chat.fromEntity(entity, party))
                 .orElseGet(() -> Chat.empty(party));
     }

@@ -17,7 +17,7 @@ public class IdGeneratorConfiguration {
 
     @PostConstruct
     public void init() {
-        chatRepository.findTopBy(Sort.by(Order.desc("id")))
+        chatRepository.findTopBy(Sort.by("id").descending())
                 .ifPresent(entity -> IdGenerator.setInitialId(entity.getId()));
     }
 }

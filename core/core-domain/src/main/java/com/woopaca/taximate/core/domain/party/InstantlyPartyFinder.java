@@ -18,7 +18,7 @@ public class InstantlyPartyFinder {
     }
 
     public List<Party> findRecentParties(Duration recentDuration) {
-        Sort sortByCreatedAt = Sort.by(Sort.Order.asc("createdAt"));
+        Sort sortByCreatedAt = Sort.by("createdAt");
         LocalDateTime recentThreshold = LocalDateTime.now()
                 .minus(recentDuration);
         return instantlyPartyRepository.findByCreatedAtAfter(recentThreshold, sortByCreatedAt)
