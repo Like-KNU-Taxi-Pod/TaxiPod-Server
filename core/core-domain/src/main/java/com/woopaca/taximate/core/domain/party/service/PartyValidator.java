@@ -32,14 +32,14 @@ public class PartyValidator {
         validateContents(party);
         validateDepartureBeforeCurrentTime(party);
         validateParticipantsCount(party);
-        validateMaxParticipationCount(host);
+//        validateMaxParticipationCount(host);
     }
 
     public void validateParticipateParty(Party party, User participant) {
         validateProgress(party);
         validateAlreadyParticipated(party, participant);
         validateParticipantsFull(party);
-        validateMaxParticipationCount(participant);
+//        validateMaxParticipationCount(participant);
         validateNoParticipants(party);
     }
 
@@ -116,6 +116,6 @@ public class PartyValidator {
             throw new TitleTooLongException();
         }
         validateParticipantsCount(party);
-        validateMaxParticipationCount(host);
+//        validateMaxParticipationCount(host);
     }
 }
