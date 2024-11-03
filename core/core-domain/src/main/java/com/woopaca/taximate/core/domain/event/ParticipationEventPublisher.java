@@ -1,6 +1,5 @@
 package com.woopaca.taximate.core.domain.event;
 
-import com.woopaca.taximate.core.domain.event.dto.DelegateHostEvent;
 import com.woopaca.taximate.core.domain.event.dto.LeaveEvent;
 import com.woopaca.taximate.core.domain.event.dto.ParticipateEvent;
 import com.woopaca.taximate.core.domain.party.Party;
@@ -26,11 +25,6 @@ public class ParticipationEventPublisher {
 
     public void publishLeaveEvent(Party party, User user, LocalDateTime leftAt) {
         LeaveEvent event = new LeaveEvent(party, user, leftAt);
-        eventPublisher.publishEvent(event);
-    }
-
-    public void publishDelegateHostEvent(Party party, User formerHost, User newHost, LocalDateTime delegatedAt) {
-        DelegateHostEvent event = new DelegateHostEvent(party, formerHost, newHost, delegatedAt);
         eventPublisher.publishEvent(event);
     }
 }

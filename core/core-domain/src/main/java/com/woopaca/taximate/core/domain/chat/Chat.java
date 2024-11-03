@@ -19,7 +19,6 @@ public class Chat {
     public static final int MAX_MESSAGE_LENGTH = 500;
     public static final String PARTICIPATE_MESSAGE = "%s님이 팟에 참여했습니다.";
     public static final String LEAVE_MESSAGE = "%s님이 팟을 나갔습니다.";
-    public static final String DELEGATE_HOST_MESSAGE = "%s님이 호스트가 되었습니다.";
 
     @EqualsAndHashCode.Include
     private Long id;
@@ -60,10 +59,6 @@ public class Chat {
 
     public static Chat leaveMessage(Party party, User leaver, LocalDateTime leftAt) {
         return systemMessage(party, leaver, String.format(LEAVE_MESSAGE, leaver.getNickname()), leftAt);
-    }
-
-    public static Chat delegateHostMessage(Party party, User leaver, User newHost, LocalDateTime leftAt) {
-        return systemMessage(party, leaver, String.format(DELEGATE_HOST_MESSAGE, newHost.getNickname()), leftAt);
     }
 
     private static Chat systemMessage(Party party, User sender, String message, LocalDateTime sentAt) {

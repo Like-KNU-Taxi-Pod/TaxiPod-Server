@@ -2,7 +2,6 @@ package com.woopaca.taximate.core.domain.event;
 
 import com.woopaca.taximate.core.domain.chat.Chat;
 import com.woopaca.taximate.core.domain.chat.MessageNotifier;
-import com.woopaca.taximate.core.domain.event.dto.DelegateHostEvent;
 import com.woopaca.taximate.core.domain.event.dto.LeaveEvent;
 import com.woopaca.taximate.core.domain.event.dto.ParticipateEvent;
 import com.woopaca.taximate.core.domain.party.Party;
@@ -38,17 +37,6 @@ public class ParticipationEventSubscriber {
         User leaver = leaveEvent.leaver();
         Party party = leaveEvent.party();
         Chat leaveMessage = Chat.leaveMessage(party, leaver, leaveEvent.leftAt());
-        chatEventPublisher.publishChatEvent(leaveMessage);
-        messageNotifier.notify(leaveMessage);
-    }
-
-    @Async("eventHandlerTaskExecutor")
-    @TransactionalEventListener
-    public void handleDelegateHostEvent(DelegateHostEvent delegateHostEvent) {
-        Party party = delegateHostEvent.party();
-        User leaver = delegateHostEvent.leaver();
-        User newHost = delegateHostEvent.newHost();
-        Chat leaveMessage = Chat.delegateHostMessage(party, leaver, newHost, delegateHostEvent.delegatedAt());
         chatEventPublisher.publishChatEvent(leaveMessage);
         messageNotifier.notify(leaveMessage);
     }

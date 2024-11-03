@@ -20,14 +20,16 @@ public class Participation {
     private ParticipationStatus status;
     private LocalDateTime participatedAt;
     private User user;
+    private LocalDateTime modifiedAt;
 
     @Builder
-    public Participation(Long id, ParticipationRole role, ParticipationStatus status, LocalDateTime participatedAt, User user) {
+    public Participation(Long id, ParticipationRole role, ParticipationStatus status, LocalDateTime participatedAt, User user, LocalDateTime modifiedAt) {
         this.id = id;
         this.role = role;
         this.status = status;
         this.participatedAt = participatedAt;
         this.user = user;
+        this.modifiedAt = modifiedAt;
     }
 
     public static Participation fromEntity(ParticipationEntity entity) {
@@ -35,8 +37,9 @@ public class Participation {
                 .id(entity.getId())
                 .role(ParticipationRole.valueOf(entity.getRole()))
                 .status(ParticipationStatus.valueOf(entity.getStatus()))
-                .participatedAt(entity.getUpdatedAt())
+                .participatedAt(entity.getCreatedAt())
                 .user(User.fromEntity(entity.getUser()))
+                .modifiedAt(entity.getUpdatedAt())
                 .build();
     }
 

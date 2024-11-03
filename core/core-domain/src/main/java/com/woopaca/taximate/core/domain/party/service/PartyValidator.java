@@ -1,7 +1,6 @@
 package com.woopaca.taximate.core.domain.party.service;
 
 import com.woopaca.taximate.core.domain.error.exception.ExplanationTooLongException;
-import com.woopaca.taximate.core.domain.error.exception.NonexistentPartyException;
 import com.woopaca.taximate.core.domain.error.exception.NotParticipatedPartyException;
 import com.woopaca.taximate.core.domain.error.exception.ParticipantsCountException;
 import com.woopaca.taximate.core.domain.error.exception.ParticipantsFullException;
@@ -32,15 +31,14 @@ public class PartyValidator {
         validateContents(party);
         validateDepartureBeforeCurrentTime(party);
         validateParticipantsCount(party);
-//        validateMaxParticipationCount(host);
+        validateMaxParticipationCount(host);
     }
 
     public void validateParticipateParty(Party party, User participant) {
         validateProgress(party);
         validateAlreadyParticipated(party, participant);
         validateParticipantsFull(party);
-//        validateMaxParticipationCount(participant);
-        validateNoParticipants(party);
+        validateMaxParticipationCount(participant);
     }
 
     private void validateContents(Party party) {
@@ -78,12 +76,6 @@ public class PartyValidator {
         }
     }
 
-    private void validateNoParticipants(Party party) {
-        if (!party.isParticipantsExist()) {
-            throw new NonexistentPartyException(party.getId());
-        }
-    }
-
     private void validateProgress(Party party) {
         if (party.isTerminated()) {
             throw new PartyAlreadyEndedException(party.getId());
@@ -109,13 +101,5 @@ public class PartyValidator {
         if (!party.isParticipated(leaver)) {
             throw new NotParticipatedPartyException();
         }
-    }
-
-    public void validateCreateInstantlyParty(Party party, User host) {
-        if (party.getTitle().length() > Party.MAX_TITLE_LENGTH) {
-            throw new TitleTooLongException();
-        }
-        validateParticipantsCount(party);
-//        validateMaxParticipationCount(host);
     }
 }

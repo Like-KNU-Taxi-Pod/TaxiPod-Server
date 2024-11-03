@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ErrorType {
 
+    // TODO error code 상세 설정 및 오류 형식별 type 분리하기
     COORDINATE_OUT_OF_RANGE("", ErrorHttpStatus.BAD_REQUEST),
     INVALID_MAP_RANGE("", ErrorHttpStatus.BAD_REQUEST),
 
