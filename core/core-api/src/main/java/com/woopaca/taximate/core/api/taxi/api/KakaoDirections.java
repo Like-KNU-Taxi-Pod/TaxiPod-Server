@@ -16,7 +16,7 @@ public record KakaoDirections(List<Route> routes) {
 
         return sections.get(0)
                 .guides.stream()
-                .map(guide -> new Coordinate(guide.x, guide.y))
+                .map(guide -> Coordinate.of(guide.y, guide.x))
                 .toList();
     }
 
