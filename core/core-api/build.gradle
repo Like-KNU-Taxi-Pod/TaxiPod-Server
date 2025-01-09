@@ -20,6 +20,10 @@ dependencies {
     testImplementation 'org.orbisgis:h2gis:2.2.3'
 }
 
+bootJar {
+    archiveFileName = 'TaxiMate.jar'
+}
+
 test {
     useJUnitPlatform()
 }
